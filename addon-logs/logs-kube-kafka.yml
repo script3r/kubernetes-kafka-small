@@ -13,8 +13,14 @@ spec:
     spec:
       containers:
       - name: filebeat
-        image: solsson/kafka-filebeat-kubernetes
-        imagePullPolicy: Never
+        image: solsson/kafka-filebeat-kubernetes@sha256:79b40d81b892ffb3b917eb249f4b3050badf57fadffbdc35272060c9b377209e
+        command:
+        - filebeat
+        - -e
+        - -c
+        - /etc/filebeat/filebeat.yml
+        #- -d
+        #- "*"
         resources:
           limits:
             memory: 100Mi
@@ -22,6 +28,9 @@ spec:
             cpu: 100m
             memory: 100Mi
         volumeMounts:
+        - name: config
+          mountPath: /etc/filebeat
+          readOnly: true
         - name: varlog
           mountPath: /var/log
           readOnly: true
@@ -30,6 +39,9 @@ spec:
           readOnly: true
       terminationGracePeriodSeconds: 10
       volumes:
+      - name: config
+        configMap:
+          name: filebeat-config
       - name: varlog
         hostPath:
           path: /var/log
