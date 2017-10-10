@@ -12,23 +12,9 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
-      - name: kafkacat
-        image: solsson/kafkacat@sha256:36d1f191cc33a8365074280279205e6b4f52cd8cc8fb1b896bb4c943c9dee8f8
-        command:
-        - sh
-        - -ec
-        - >
-          cd /var/log/containers/;
-          tail
-          -n 0
-          --follow=name
-          *.log
-          |
-          kafkacat
-          -b kafka-0.broker.kafka.svc.cluster.local:9092,kafka-1.broker.kafka.svc.cluster.local:9092,kafka-2.broker.kafka.svc.cluster.local:9092
-          -t ops-kube-logs-raw-001
-          -P
-          #-z snappy
+      - name: filebeat
+        image: solsson/kafka-filebeat-kubernetes
+        imagePullPolicy: Never
         resources:
           limits:
             memory: 100Mi
