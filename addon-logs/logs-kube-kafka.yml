@@ -31,6 +31,8 @@ spec:
         - name: config
           mountPath: /etc/filebeat
           readOnly: true
+        - name: data
+          mountPath: /data
         - name: varlog
           mountPath: /var/log
           readOnly: true
@@ -42,6 +44,9 @@ spec:
       - name: config
         configMap:
           name: filebeat-config
+      - name: data
+        hostPath:
+          path: /kubernets-filebeat-state
       - name: varlog
         hostPath:
           path: /var/log
