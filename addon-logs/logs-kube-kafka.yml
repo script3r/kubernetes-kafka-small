@@ -19,8 +19,17 @@ spec:
         - -e
         - -c
         - /etc/filebeat/filebeat.yml
-        #- -d
-        #- "*"
+        - -E
+          # match pod names, to exclude own's logs and thus reduce the risk for aggregation recursion
+        - filebeat.prospectors.exclude_files=['^logs-','^test-']
+        - -E
+        - output.kafka.topic=ops-kube-logs-raw-001
+          # Required in minikube (as is the varlibdockercontainers mount below)
+          # https://www.elastic.co/guide/en/beats/filebeat/current/configuration-filebeat-options.html#_symlinks
+        - -E
+        - filebeat.prospectors.symlinks='true'
+        - -d
+        - "service,beat"
         resources:
           limits:
             memory: 100Mi

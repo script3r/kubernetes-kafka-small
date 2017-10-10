@@ -11,9 +11,6 @@ data:
       enabled: true
       paths:
         - /var/log/containers/*.log
-      # Required in minikube, probably not an issue elsewhere
-      # https://www.elastic.co/guide/en/beats/filebeat/current/configuration-filebeat-options.html#_symlinks
-      symlinks: true
 
     processors:
     - add_kubernetes_metadata:
@@ -21,7 +18,6 @@ data:
 
     output.kafka:
       hosts: ["kafka-0.broker.kafka.svc.cluster.local:9092", "kafka-1.broker.kafka.svc.cluster.local:9092", "kafka-2.broker.kafka.svc.cluster.local:9092"]
-      topic: ops-kube-logs-raw-001
       
       partition.round_robin:
         reachable_only: false
