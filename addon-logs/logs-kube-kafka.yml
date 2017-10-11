@@ -21,6 +21,9 @@ spec:
         - /etc/filebeat/filebeat.yml
         - -d
         - "service,beat"
+        env:
+        - name: TOPIC
+          value: ops-kube-logs-raw-001
         resources:
           limits:
             memory: 100Mi

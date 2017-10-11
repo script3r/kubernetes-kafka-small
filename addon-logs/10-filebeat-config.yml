@@ -21,7 +21,7 @@ data:
 
     output.kafka:
       hosts: ["kafka-0.broker.kafka.svc.cluster.local:9092", "kafka-1.broker.kafka.svc.cluster.local:9092", "kafka-2.broker.kafka.svc.cluster.local:9092"]
-      topic: ops-kube-logs-raw-001
+      topic: ${TOPIC}
 
       partition.round_robin:
         reachable_only: false
